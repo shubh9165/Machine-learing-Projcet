@@ -8,6 +8,9 @@ from sklearn.model_selection import train_test_split
 from src.componets.data_transformation import DataTransformation
 from src.componets.data_transformation import DataTransformationConfig
 
+from src.componets.model_trainer import modelTrainer
+from src.componets.model_trainer import modelTrainerConfig
+
 
 
 @dataclass
@@ -57,3 +60,6 @@ if __name__ == "__main__":
 
     data_transformation=DataTransformation()
     train_arr,test_arr,_=data_transformation.initiate_data_transformation(train_data,test_data)
+
+    model_trainer=modelTrainer()
+    print(model_trainer.initate_model_trainer(train_arr,test_arr))
