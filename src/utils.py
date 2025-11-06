@@ -1,3 +1,5 @@
+
+
 import pandas as pd
 import sys
 import os
@@ -5,6 +7,19 @@ from src.exception import CustomExcption
 import pickle
 from sklearn.metrics import r2_score
 from src.logger import logging
+from sklearn.model_selection import GridSearchCV
+import dill
+import pickle
+
+
+def load_object(file_path):
+    try:
+        with open(file_path, "rb") as file_obj:
+            mo=pickle.load(file_obj)
+            return mo
+
+    except Exception as e:
+        raise CustomExcption(e, sys)
 
 def save_object(file_path, obj):
     try:
@@ -18,7 +33,7 @@ def save_object(file_path, obj):
     except Exception as e:
         raise CustomExcption(e, sys)
     
-def evlauate_model(X_train,X_test,y_train,y_test,models):
+def evlauate_model(X_train,X_test,y_train,y_test,models,params):
 
     try:
         logging.info("Now it reporting models")
@@ -26,6 +41,14 @@ def evlauate_model(X_train,X_test,y_train,y_test,models):
 
         for i in range(len(list(models))):
             model=list(models.values())[i]
+            para=params[list(models.keys())[i]]
+
+            #model.fit(X_train,y_train)
+
+            gs=GridSearchCV(model,para,cv=3)
+            gs.fit(X_train,y_train)
+
+            model.set_params(**gs.best_params_)
 
             model.fit(X_train,y_train)
 

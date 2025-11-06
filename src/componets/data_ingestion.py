@@ -29,6 +29,7 @@ class DataIngestion:
 
         try:
             df = pd.read_csv(r'notebook\data\StudentsPerformance.csv')
+            df.columns = df.columns.str.lower().str.replace(" ", "_").str.replace("/", "_")
             logging.info("Dataset has been successfully read")
 
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
